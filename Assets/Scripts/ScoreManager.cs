@@ -13,7 +13,12 @@ public class ScoreManager : MonoBehaviour
         text = GetComponent<TextMeshProUGUI>();
     }
 
-    public void SetScore(int score)
+    private void Start()
+    {
+        GameManager.Instance.OnUpdateScore += SetScore;
+    }
+
+    private void SetScore(int score)
     {
         text.text = "SCORE: " + score;
     }

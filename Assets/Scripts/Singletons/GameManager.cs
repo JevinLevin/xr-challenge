@@ -3,15 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UIManager : MonoBehaviour
+public class GameManager : MonoBehaviour
 {
-    public static UIManager Instance { get; private set; }
+    #region Singleton
+    public static GameManager Instance { get; private set; }
+    
+    public Action<int> OnUpdateScore;
 
-    [Header("References")] 
-    [SerializeField] private ScoreManager scoreScript;
-    public ScoreManager ScoreScript => scoreScript;
-    
-    
     private void Awake()
     {
         if (Instance != null && Instance != this) 
@@ -26,4 +24,5 @@ public class UIManager : MonoBehaviour
 
         DontDestroyOnLoad(this.gameObject);
     }
+    #endregion
 }
