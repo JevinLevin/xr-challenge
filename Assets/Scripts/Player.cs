@@ -15,6 +15,8 @@ public class Player : MonoBehaviour
 
     private float ySpeed;
 
+    private int score;
+
     private void Awake()
     {
         controller = GetComponent<CharacterController>();
@@ -47,5 +49,27 @@ public class Player : MonoBehaviour
         // Reset vertical motion if falling and on ground
         if (ySpeed < 0 && controller.isGrounded)
             ySpeed = 0;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.TryGetComponent(out Pickup pickupScript))
+        {
+            CollectPickup(pickupScript);
+        }
+    }
+
+    private void CollectPickup(Pickup pickupScript)
+    {
+        // Function returns score to add to player
+        int newScore = pickupScript.GetPickedUp();
+
+        // Ignore if already collected
+        if (newScore == -1)
+            return;
+        
+        score += newScore;
+            
+        print(score);
     }
 }
