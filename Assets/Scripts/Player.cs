@@ -63,7 +63,7 @@ public class Player : MonoBehaviour
         
         
         // Fail logic
-        if (transform.position.y < 0 && active)
+        if (transform.position.y < -1 && active)
             Fail();
 
     }

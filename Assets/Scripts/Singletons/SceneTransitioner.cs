@@ -5,6 +5,11 @@ using UnityEngine.SceneManagement;
 
 public class SceneTransitioner : MonoBehaviour
 {
+    
+    [Header("Config")] 
+    [SerializeField] private float transitionDelay;
+    [SerializeField] private float defaultInLength;
+    [SerializeField] private float defaultOutLength;
     public static SceneTransitioner Instance { get; private set; }
     private TransitionScreen transitionScreen;
 
@@ -27,19 +32,19 @@ public class SceneTransitioner : MonoBehaviour
 
     public void ReloadCurrentScene(string transitionMsg)
     {
-        StartCoroutine(LoadScene(SceneManager.GetActiveScene().name, 1.0f, 1.0f, transitionMsg));
+
+        StartCoroutine(LoadScene(SceneManager.GetActiveScene().name, defaultInLength, defaultOutLength, transitionMsg));
     }
 
 
-    private IEnumerator LoadScene(string sceneName, float fadeInLength, float fadeOutLength, string transitionMsg)
+    private IEnumerator LoadScene(string sceneName, float inLength, float outLength, string transitionMsg)
     {
-        transitionScreen.FadeIn(fadeInLength, transitionMsg);
+        transitionScreen.FadeIn(inLength, transitionMsg);
 
-        yield return new WaitForSeconds(fadeInLength);
+        yield return new WaitForSeconds(inLength + transitionDelay);
 
         SceneManager.LoadScene(sceneName);
-        yield return new WaitForEndOfFrame();
-        
-        transitionScreen.FadeOut(fadeOutLength);
+
+        transitionScreen.FadeOut(outLength);
     }
 }
