@@ -9,11 +9,13 @@ public class Player : MonoBehaviour
     [SerializeField] private float playerSpeed;
 
     [SerializeField] private float playerGravity;
+    [SerializeField] private float playerJumpPower;
 
     private CharacterController controller;
     private Camera mainCamera;
 
     private float ySpeed;
+    private bool onGround = false;
 
     private int score;
 
@@ -39,16 +41,21 @@ public class Player : MonoBehaviour
         moveDirection.y = 0;
         
         Vector3 velocity = moveDirection * playerSpeed;
+        
+        // Jump logic
+        if (Input.GetKeyDown(KeyCode.Space))
+            Jump();
 
         // Apply any vertical motion, like gravity
         ySpeed -= playerGravity * Time.deltaTime;
         velocity.y = ySpeed;
-
+        
+        
         controller.Move(velocity * Time.deltaTime);
+        
+        if(!onGround && controller.isGrounded)
+            Land();
 
-        // Reset vertical motion if falling and on ground
-        if (ySpeed < 0 && controller.isGrounded)
-            ySpeed = 0;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -71,6 +78,27 @@ public class Player : MonoBehaviour
         score += newScore;
         UIManager.Instance.ScoreScript.SetScore(score);
             
-        print(score);
+        //print(score);
+    }
+
+    private void Jump()
+    {
+        // Prevent jumping midair
+        if (!onGround) return;
+
+        onGround = false;
+        
+        ySpeed = playerJumpPower;
+        
+        //print("jump");
+    }
+
+    private void Land()
+    {
+        onGround = true;
+
+        ySpeed = 0.0f;
+        
+        //print("land");
     }
 }
