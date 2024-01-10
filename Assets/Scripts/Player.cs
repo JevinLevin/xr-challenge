@@ -69,6 +69,7 @@ public class Player : MonoBehaviour
             return;
         
         score += newScore;
+        UIManager.Instance.ScoreScript.SetScore(score);
             
         print(score);
     }
