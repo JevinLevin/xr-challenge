@@ -11,19 +11,6 @@ public class Bullet : MonoBehaviour
 
     private float lifetime;
     private Action<Bullet> killEvent;
-    public void Shoot(Transform origin, Action<Bullet> killEvent)
-    {
-        gameObject.SetActive(true);
-        
-        // Initialise transform
-        transform.rotation = Quaternion.Euler(origin.rotation.eulerAngles);
-        transform.position = origin.position;
-        
-        lifetime = 0.0f;
-        
-        // Used to return bullet to object pool once destroyed
-        this.killEvent = killEvent;
-    }
 
     private void Update()
     {
@@ -40,5 +27,22 @@ public class Bullet : MonoBehaviour
     private void OnCollisionEnter(Collision other)
     {
         killEvent?.Invoke(this);
+    }
+    
+    /// <summary>
+    /// Inititalises the bullet each time its shot
+    /// </summary>
+    public void Shoot(Transform origin, Action<Bullet> killEvent)
+    {
+        gameObject.SetActive(true);
+        
+        // Initialise transform
+        transform.rotation = Quaternion.Euler(origin.rotation.eulerAngles);
+        transform.position = origin.position;
+        
+        lifetime = 0.0f;
+        
+        // Used to return bullet to object pool once destroyed
+        this.killEvent = killEvent;
     }
 }

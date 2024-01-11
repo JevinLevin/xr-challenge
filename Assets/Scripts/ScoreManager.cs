@@ -18,6 +18,9 @@ public class ScoreManager : MonoBehaviour
         GameManager.Instance.OnUpdateScore += SetScore;
     }
 
+    /// <summary>
+    /// Sets score text based on input
+    /// </summary>
     private void SetScore(int score)
     {
         text.text = "SCORE: " + score;

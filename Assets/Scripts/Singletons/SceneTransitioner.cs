@@ -30,6 +30,9 @@ public class SceneTransitioner : MonoBehaviour
         transitionScreen = GetComponentInChildren<TransitionScreen>(true);
     }
 
+    /// <summary>
+    /// Reloads the currently playing scene, useful for resetting the game
+    /// </summary>
     public void ReloadCurrentScene(string transitionMsg)
     {
 
@@ -37,6 +40,9 @@ public class SceneTransitioner : MonoBehaviour
     }
 
 
+    /// <summary>
+    /// Loads the scene provided with a transition animation
+    /// </summary>
     private IEnumerator LoadScene(string sceneName, float inLength, float outLength, string transitionMsg)
     {
         transitionScreen.FadeIn(inLength, transitionMsg);

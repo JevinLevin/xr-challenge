@@ -111,6 +111,10 @@ public class Player : MonoBehaviour
             Shoot();
     }
 
+    /// <summary>
+    /// Creates vector based on movement input
+    /// </summary>
+    /// <returns> A vector based on input and camera direction for the player to move </returns>
     private Vector3 GetMovementDirection()
     {
         if (!active) return Vector3.zero;
@@ -133,6 +137,9 @@ public class Player : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Collects pickup when player walks into it
+    /// </summary>
     private void CollectPickup(Pickup pickupScript)
     {
         // Function returns score to add to player
@@ -147,12 +154,17 @@ public class Player : MonoBehaviour
         GameManager.Instance.OnUpdateScore?.Invoke(score);
     }
 
+    /// <summary>
+    /// Ran if the player falls off a platform without jumping
+    /// </summary>
     private void Fall()
     {
         onGround = false;
-        print("fall");
     }
 
+    /// <summary>
+    /// Ran when the player jumps
+    /// </summary>
     private void Jump()
     {
 
@@ -162,6 +174,9 @@ public class Player : MonoBehaviour
         ySpeed = playerJumpPower;
     }
 
+    /// <summary>
+    /// Ran whenever the player lands on a platform
+    /// </summary>
     private void Land()
     {
         onGround = true;
@@ -172,6 +187,9 @@ public class Player : MonoBehaviour
         //print("land");
     }
 
+    /// <summary>
+    /// Ran if the player died in any way
+    /// </summary>
     private void Fail()
     {
         active = false;
@@ -181,15 +199,20 @@ public class Player : MonoBehaviour
         //print("dead");
     }
 
+    /// <summary>
+    /// Ran when the player shoots their gun
+    /// </summary>
     private void Shoot()
     {
         // Use object pool to spawn bullet
         bullets.Get();
     }
 
+    /// <summary>
+    /// Returns a bullet to the object pool once done
+    /// </summary>
     private void KillBullet(Bullet bullet)
     {
-        // Return to object pool
         bullets.Release(bullet);
     }
 }
