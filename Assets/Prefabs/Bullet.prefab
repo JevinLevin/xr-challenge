@@ -128,3 +128,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bulletSpeed: 25
   bulletLifetime: 1
+  bulletDamage: 10

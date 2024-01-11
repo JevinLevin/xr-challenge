@@ -6,8 +6,10 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
+    [Header("Config")]
     [SerializeField] private float bulletSpeed;
     [SerializeField] private float bulletLifetime;
+    [SerializeField] private float bulletDamage;
 
     private float lifetime;
     private Action<Bullet> killEvent;
@@ -27,6 +29,11 @@ public class Bullet : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (other.name == "Player") return;
+        
+        if (other.TryGetComponent(out Zombie zombieScript))
+        {
+            zombieScript.TakeDamage(bulletDamage);
+        }
         
         killEvent?.Invoke(this);
     }
