@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
     #region Singleton
     public static GameManager Instance { get; private set; }
     
+    public Player player { get; set; }
     public Action<int> OnUpdateScore;
 
     private void Awake()

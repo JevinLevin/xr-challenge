@@ -24,8 +24,10 @@ public class Bullet : MonoBehaviour
             killEvent?.Invoke(this);
     }
 
-    private void OnCollisionEnter(Collision other)
+    private void OnTriggerEnter(Collider other)
     {
+        if (other.name == "Player") return;
+        
         killEvent?.Invoke(this);
     }
     

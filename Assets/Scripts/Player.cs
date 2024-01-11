@@ -51,6 +51,8 @@ public class Player : MonoBehaviour
             bullet => Destroy(bullet.gameObject)
         );
 
+        GameManager.Instance.player = this;
+
     }
 
     void Start()
