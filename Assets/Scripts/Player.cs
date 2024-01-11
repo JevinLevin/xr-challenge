@@ -1,11 +1,18 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Search;
 using UnityEngine;
-using UnityEngine.Experimental.GlobalIllumination;
+using UnityEngine.Pool;
 
 public class Player : MonoBehaviour
 {
+    [Header("Assets")] 
+    [SerializeField] private GameObject bulletObject;
+
+    [Header("References")] 
+    [SerializeField] private Transform eyes;
+    [SerializeField] private Transform gun;
     
     [Header("Config")] 
     [SerializeField] private float playerSpeed;
@@ -17,7 +24,8 @@ public class Player : MonoBehaviour
 
     private CharacterController controller;
     private Camera mainCamera;
-    
+
+    private ObjectPool<Bullet> bullets;
 
     private float ySpeed;
     private bool onGround;
@@ -35,6 +43,13 @@ public class Player : MonoBehaviour
         controller = GetComponent<CharacterController>();
 
         active = true;
+
+        bullets = new ObjectPool<Bullet>(
+            () => Instantiate(bulletObject, gun.position, Quaternion.identity).GetComponent<Bullet>(),
+            bullet => bullet.Shoot(gun.transform, KillBullet), // Run shoot function whenever a new bullet is needed
+            bullet => bullet.gameObject.SetActive(false),
+            bullet => Destroy(bullet.gameObject)
+        );
 
     }
 
@@ -71,7 +86,7 @@ public class Player : MonoBehaviour
         if (jumpBuffer > 0.0f && coyoteTime>0)
             Jump();
 
-        // Apply any vertical motion, like gravity
+        // Apply gravity
         if(!onGround)
             ySpeed -= playerGravity * Time.deltaTime;
         
@@ -80,17 +95,20 @@ public class Player : MonoBehaviour
         
         controller.Move(velocity * Time.deltaTime);
 
+        // Ground interaction
         if (onGround && !controller.isGrounded)
             Fall();
-        
         if(!onGround && controller.isGrounded)
             Land();
         
         
-        // Fail logic
+        // Falling logic
         if (transform.position.y < -1 && active)
             Fail();
-
+        
+        // Shooting logic
+        if (Input.GetMouseButtonDown(0))
+            Shoot();
     }
 
     private Vector3 GetMovementDirection()
@@ -127,15 +145,12 @@ public class Player : MonoBehaviour
         score += newScore;
         
         GameManager.Instance.OnUpdateScore?.Invoke(score);
-
-        //print(score);
     }
 
     private void Fall()
     {
         onGround = false;
-        
-        //print("fall");
+        print("fall");
     }
 
     private void Jump()
@@ -145,8 +160,6 @@ public class Player : MonoBehaviour
         coyoteTime = 0.0f;
         
         ySpeed = playerJumpPower;
-        
-        //print("jump");
     }
 
     private void Land()
@@ -166,5 +179,17 @@ public class Player : MonoBehaviour
         SceneTransitioner.Instance.ReloadCurrentScene("You Died");
         
         //print("dead");
+    }
+
+    private void Shoot()
+    {
+        // Use object pool to spawn bullet
+        bullets.Get();
+    }
+
+    private void KillBullet(Bullet bullet)
+    {
+        // Return to object pool
+        bullets.Release(bullet);
     }
 }
