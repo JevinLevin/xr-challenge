@@ -11,6 +11,8 @@ public class Player : MonoBehaviour
 
     [SerializeField] private float playerGravity;
     [SerializeField] private float playerJumpPower;
+    [SerializeField] private float playerJumpBuffer = 0.2f;
+    [SerializeField] private float playerCoyoteTime = 0.2f;
 
     private CharacterController controller;
     private Camera mainCamera;
@@ -19,6 +21,9 @@ public class Player : MonoBehaviour
     private float ySpeed;
     private bool onGround;
     private bool active;
+    
+    private float jumpBuffer;
+    private float coyoteTime;
 
     private int score;
 
@@ -43,7 +48,18 @@ public class Player : MonoBehaviour
         Vector3 velocity = moveDirection * playerSpeed;
         
         // Jump logic
+        // Buffer
+        jumpBuffer -= Time.deltaTime;
         if (Input.GetKeyDown(KeyCode.Space))
+            jumpBuffer = playerJumpBuffer;
+        
+        // Coyote Time
+        if (onGround)
+            coyoteTime = playerCoyoteTime;
+        else
+            coyoteTime -= Time.deltaTime;
+
+        if (jumpBuffer > 0.0f && coyoteTime>0)
             Jump();
 
         // Apply any vertical motion, like gravity
@@ -115,10 +131,9 @@ public class Player : MonoBehaviour
 
     private void Jump()
     {
-        // Prevent jumping midair
-        if (!onGround) return;
 
         onGround = false;
+        coyoteTime = 0.0f;
         
         ySpeed = playerJumpPower;
         
