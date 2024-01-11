@@ -61,7 +61,6 @@ public class Zombie : MonoBehaviour
     /// </summary>
     private void Die()
     {
-        print("die");
         Destroy(gameObject);
     }
 }
