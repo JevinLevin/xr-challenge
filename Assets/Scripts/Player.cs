@@ -6,6 +6,7 @@ using UnityEngine.Experimental.GlobalIllumination;
 
 public class Player : MonoBehaviour
 {
+    
     [Header("Config")] 
     [SerializeField] private float playerSpeed;
 
@@ -21,6 +22,8 @@ public class Player : MonoBehaviour
     private float ySpeed;
     private bool onGround;
     private bool active;
+    // Initializing with a vector zero spams the console with messages because of the lookrotation function
+    private Vector3 rotationDirection = new Vector3(0.01f,0,0);
     
     private float jumpBuffer;
     private float coyoteTime;
@@ -44,6 +47,12 @@ public class Player : MonoBehaviour
     {
 
         Vector3 moveDirection = GetMovementDirection();
+
+        // Rotate the player in the direction they're moving in (unless theres no input)
+        if (moveDirection != Vector3.zero)
+            rotationDirection = moveDirection;
+        Quaternion rotationQuaternion = Quaternion.LookRotation(rotationDirection, transform.up);
+        transform.rotation = Quaternion.Slerp(transform.rotation, rotationQuaternion, Time.deltaTime * 16);
         
         Vector3 velocity = moveDirection * playerSpeed;
         
