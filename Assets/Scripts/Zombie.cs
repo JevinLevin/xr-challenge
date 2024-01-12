@@ -28,7 +28,7 @@ public class Zombie : MonoBehaviour
 
     private void Start()
     {
-        player = GameManager.Instance.player.transform;
+        player = GameManager.Instance.Player.transform;
         healthbar.Setup(maxHealth, ref onHealthChange);
     }
 
@@ -78,5 +78,12 @@ public class Zombie : MonoBehaviour
         GameManager.Instance.GiveScore(scoreValue);
         
         Destroy(gameObject);
+    }
+
+    private void OnCollisionEnter(Collision other)
+    {
+        // Kills player on collision
+        if (other.gameObject.CompareTag("Player"))
+            GameManager.Instance.Player.Die();
     }
 }

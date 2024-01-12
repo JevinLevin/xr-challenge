@@ -89,7 +89,7 @@ public class ZombieSpawner : MonoBehaviour
             position = GetRandomPosition();
 
             // Repeatedly generate positions until its out of camera view and far enough from the player
-        } while (Vector3.Distance(position, GameManager.Instance.player.transform.position) < minPlayerDistance || IsVisible(position));
+        } while (Vector3.Distance(position, GameManager.Instance.Player.transform.position) < minPlayerDistance || IsVisible(position));
         
         return position;
 

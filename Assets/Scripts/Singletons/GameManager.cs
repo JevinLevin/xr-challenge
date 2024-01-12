@@ -25,7 +25,7 @@ public class GameManager : MonoBehaviour
     }
     #endregion
     
-    public Player player { get; set; }
+    public Player Player { get; set; }
     public Action<int> OnUpdateScore;
 
     private int score;

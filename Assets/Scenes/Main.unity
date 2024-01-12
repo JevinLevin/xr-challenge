@@ -3292,7 +3292,7 @@ GameObject:
   - component: {fileID: 1342394702}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3747,9 +3747,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d6dc42a31424ec4eb676f0a9814b1e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  transitionDelay: 0.5
+  transitionDelay: 2
   defaultInLength: 1
-  defaultOutLength: 0.5
+  defaultOutLength: 1
 --- !u!114 &1588276351
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3792,7 +3792,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_TargetDisplay: 0
 --- !u!224 &1588276353
 RectTransform:

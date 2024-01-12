@@ -31,17 +31,19 @@ public class Player : MonoBehaviour
 
         active = true;
 
-        GameManager.Instance.player = this;
+        GameManager.Instance.Player = this;
 
     }
 
-    void Start()
+    private void Start()
     {
         mainCamera = Camera.main;
     }
 
-    void Update()
+    private void Update()
     {
+        // Dont run update if game is inactive
+        if (!active) return;
 
         Vector3 moveDirection = GetMovementDirection();
 
@@ -88,8 +90,9 @@ public class Player : MonoBehaviour
         
         
         // Falling logic
+        // No longer really needed since there is no place to fall, but good for if the player glitches out of bounds i guess
         if (transform.position.y < -1 && active)
-            Fail();
+            Die();
         
     }
 
@@ -99,8 +102,6 @@ public class Player : MonoBehaviour
     /// <returns> A vector based on input and camera direction for the player to move </returns>
     private Vector3 GetMovementDirection()
     {
-        if (!active) return Vector3.zero;
-        
         // Get players input direction
         Vector3 inputDirection = new Vector3(Input.GetAxisRaw("Horizontal"),0,Input.GetAxisRaw("Vertical")).normalized;
         
@@ -171,13 +172,11 @@ public class Player : MonoBehaviour
     /// <summary>
     /// Ran if the player died in any way
     /// </summary>
-    private void Fail()
+    public void Die()
     {
         active = false;
         
         SceneTransitioner.Instance.ReloadCurrentScene("You Died");
-        
-        //print("dead");
     }
     
 }
