@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class ScoreManager : MonoBehaviour
+public class ScoreHandler : MonoBehaviour
 {
     private TextMeshProUGUI text;
 
@@ -15,9 +15,12 @@ public class ScoreManager : MonoBehaviour
 
     private void Start()
     {
-        GameManager.Instance.OnUpdateScore += SetScore;
+        GameManager.OnUpdateScore += SetScore;
     }
 
+    /// <summary>
+    /// Sets score text based on input
+    /// </summary>
     private void SetScore(int score)
     {
         text.text = "SCORE: " + score;

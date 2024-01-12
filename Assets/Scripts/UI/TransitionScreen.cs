@@ -19,7 +19,11 @@ public class TransitionScreen : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    public void FadeIn(float length, string transitionMsg)
+    /// <summary>
+    /// Increases opacity of screen
+    /// Additionally sets screen text if provided
+    /// </summary>
+    public void FadeIn(float length, string transitionMsg = "")
     {
         // Init
         gameObject.SetActive(true);
@@ -28,6 +32,10 @@ public class TransitionScreen : MonoBehaviour
         screenText.text = transitionMsg;
         FadeScreen(1, length);
     }
+    
+    /// <summary>
+    /// Decreases opacity of screen
+    /// </summary>
     public void FadeOut(float length)
     {
         // Init
@@ -37,6 +45,9 @@ public class TransitionScreen : MonoBehaviour
         FadeScreen(0, length);
     }
 
+    /// <summary>
+    /// Tweens screen opacity based on parameters
+    /// </summary>
     private void FadeScreen(float endValue, float length)
     {
         canvasGroup.DOFade(endValue, length);
