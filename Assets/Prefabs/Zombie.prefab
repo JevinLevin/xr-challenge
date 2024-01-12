@@ -536,3 +536,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  tweenInLength: 0.04
+  tweenOutLength: 0.025
+  tweenMaxValue: 1.2
+  playTween: 1

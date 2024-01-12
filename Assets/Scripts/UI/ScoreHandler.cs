@@ -6,16 +6,30 @@ using UnityEngine;
 
 public class ScoreHandler : MonoBehaviour
 {
+    [Header("Config")]
+    [SerializeField] private float tweenInLength;
+    [SerializeField] private float tweenOutLength;
+    [SerializeField] private float tweenMaxValue;
+
+    
     private TextMeshProUGUI text;
+
+    private float fontSize;
 
     private void Awake()
     {
         text = GetComponent<TextMeshProUGUI>();
+        fontSize = text.fontSize;
     }
 
-    private void Start()
+    private void OnEnable()
     {
         GameManager.OnUpdateScore += SetScore;
+    }
+    
+    private void OnDisable()
+    {
+        GameManager.OnUpdateScore -= SetScore;
     }
 
     /// <summary>
@@ -24,5 +38,8 @@ public class ScoreHandler : MonoBehaviour
     private void SetScore(int score)
     {
         text.text = "SCORE: " + score;
+
+        StartCoroutine(GameManager.Instance.PlayTweenYoYo(value => text.fontSize = value, fontSize, fontSize*tweenMaxValue, tweenInLength, tweenOutLength, Easing.easeOutQuad));
+
     }
 }

@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class Healthbar : MonoBehaviour
 {
-    [Header("References")]
+    [Header("References")] 
     [SerializeField] private Image image;
 
     [Header("Config")] 
@@ -14,14 +14,23 @@ public class Healthbar : MonoBehaviour
     [SerializeField] private Color colorHigh;
     [SerializeField] private AnimationCurve colorCurve;
 
+    [SerializeField] private float tweenInLength;
+    [SerializeField] private float tweenOutLength;
+    [SerializeField] private float tweenMaxValue;
+    [SerializeField] private bool playTween;
+
     private float health;
     private float maxHealth;
+
+    private Vector3 startingScale;
 
     private Camera mainCamera;
 
     private void Awake()
     {
         mainCamera = Camera.main;
+
+        startingScale = transform.localScale;
     }
 
     private void Update()
@@ -56,6 +65,9 @@ public class Healthbar : MonoBehaviour
         float t = health / maxHealth;
         image.fillAmount = t;
         image.color = Color.Lerp(colorLow, colorHigh, colorCurve.Evaluate(t));
+        
+        if(t > 0 && playTween)
+            StartCoroutine(GameManager.Instance.PlayTweenYoYo(value => transform.localScale = new Vector3(value, value, value), startingScale.x, startingScale.x*tweenMaxValue, tweenInLength, tweenOutLength, Easing.easeOutQuad));
     }
 
 }

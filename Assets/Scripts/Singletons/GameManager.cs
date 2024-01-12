@@ -185,11 +185,21 @@ public class GameManager : MonoBehaviour
 
         while ((t = time / length) < 1)
         {
-            setValue?.Invoke(Mathf.Lerp(startValue, endValue, easeFunction(t)));
+            if (setValue != null)
+            {
+                setValue.Invoke(Mathf.Lerp(startValue, endValue, easeFunction(t)));
+            }
 
             time += Time.deltaTime;
 
             yield return null;
         }
+    }
+    
+    public IEnumerator PlayTweenYoYo(Action<float> setValue, float startValue, float endValue, float inLength, float outLength, Func<float, float> easeFunction)
+    {
+        StartCoroutine(PlayTween(setValue, startValue, endValue, inLength, easeFunction));
+        yield return new WaitForSeconds(inLength);
+        StartCoroutine(PlayTween(setValue, endValue, startValue, outLength, easeFunction));
     }
 }
