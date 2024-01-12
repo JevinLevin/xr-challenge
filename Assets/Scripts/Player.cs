@@ -3,21 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.Search;
 using UnityEngine;
-using UnityEngine.Pool;
 
 public class Player : MonoBehaviour
 {
-    [Header("Assets")] 
-    [SerializeField] private GameObject bulletObject;
-
-    [Header("References")] 
-    [SerializeField] private Transform eyes;
-    [SerializeField] private Transform gun;
-    [SerializeField] private Transform bulletsParent;
+    
     
     [Header("Config")] 
     [SerializeField] private float playerSpeed;
-
     [SerializeField] private float playerGravity;
     [SerializeField] private float playerJumpPower;
     [SerializeField] private float playerJumpBuffer = 0.2f;
@@ -25,14 +17,10 @@ public class Player : MonoBehaviour
 
     private CharacterController controller;
     private Camera mainCamera;
-
-    private ObjectPool<Bullet> bullets;
-
+    
     private float ySpeed;
     private bool onGround;
     private bool active;
-    // Initializing with a vector zero spams the console with messages because of the lookrotation function
-    private Vector3 rotationDirection = new Vector3(0.01f,0,0);
     
     private float jumpBuffer;
     private float coyoteTime;
@@ -44,13 +32,6 @@ public class Player : MonoBehaviour
         controller = GetComponent<CharacterController>();
 
         active = true;
-
-        bullets = new ObjectPool<Bullet>(
-            () => Instantiate(bulletObject, gun.position, Quaternion.identity, bulletsParent).GetComponent<Bullet>(),
-            bullet => bullet.Shoot(gun, KillBullet), // Run shoot function whenever a new bullet is needed
-            bullet => bullet.gameObject.SetActive(false),
-            bullet => Destroy(bullet.gameObject)
-        );
 
         GameManager.Instance.player = this;
 
@@ -112,9 +93,6 @@ public class Player : MonoBehaviour
         if (transform.position.y < -1 && active)
             Fail();
         
-        // Shooting logic
-        if (Input.GetMouseButtonDown(0))
-            Shoot();
     }
 
     /// <summary>
@@ -204,21 +182,5 @@ public class Player : MonoBehaviour
         
         //print("dead");
     }
-
-    /// <summary>
-    /// Ran when the player shoots their gun
-    /// </summary>
-    private void Shoot()
-    {
-        // Use object pool to spawn bullet
-        bullets.Get();
-    }
-
-    /// <summary>
-    /// Returns a bullet to the object pool once done
-    /// </summary>
-    private void KillBullet(Bullet bullet)
-    {
-        bullets.Release(bullet);
-    }
+    
 }
