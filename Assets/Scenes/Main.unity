@@ -3288,6 +3288,7 @@ GameObject:
   - component: {fileID: 1342394704}
   - component: {fileID: 1342394703}
   - component: {fileID: 1342394706}
+  - component: {fileID: 1342394707}
   - component: {fileID: 1342394702}
   m_Layer: 0
   m_Name: Player
@@ -3392,16 +3393,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57180980df83a734d945c7726ef8fdb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletObject: {fileID: 5545520591226959771, guid: e92555c5bd71474479c7d6340cc9a39b,
-    type: 3}
-  eyes: {fileID: 1384372339}
-  gun: {fileID: 1028411175}
-  bulletsParent: {fileID: 171499706}
   playerSpeed: 5
   playerGravity: 7.5
   playerJumpPower: 3
   playerJumpBuffer: 0.2
   playerCoyoteTime: 0.2
+--- !u!114 &1342394707
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1342394701}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30b850486199998459d4bd1495e9c2cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bulletObject: {fileID: 5545520591226959771, guid: e92555c5bd71474479c7d6340cc9a39b,
+    type: 3}
+  bulletsParent: {fileID: 171499706}
+  bulletsOrigin: {fileID: 1028411175}
+  shootDelay: 0.1
+  bulletSpeed: 50
+  bulletLifeTime: 5
+  bulletDamage: 10
 --- !u!1 &1378389102
 GameObject:
   m_ObjectHideFlags: 0

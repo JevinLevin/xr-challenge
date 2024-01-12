@@ -6,10 +6,9 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-    [Header("Config")]
-    [SerializeField] private float bulletSpeed;
-    [SerializeField] private float bulletLifetime;
-    [SerializeField] private float bulletDamage;
+    private float bulletSpeed;
+    private float bulletLifeTime;
+    private float bulletDamage;
 
     private float lifetime;
     private Action<Bullet> killEvent;
@@ -22,7 +21,7 @@ public class Bullet : MonoBehaviour
 
         // Bullet lifetime
         lifetime += Time.deltaTime;
-        if (lifetime > bulletLifetime)
+        if (lifetime > bulletLifeTime)
             killEvent?.Invoke(this);
     }
 
@@ -41,7 +40,7 @@ public class Bullet : MonoBehaviour
     /// <summary>
     /// Inititalises the bullet each time its shot
     /// </summary>
-    public void Shoot(Transform origin, Action<Bullet> killEvent)
+    public void Shoot(Transform origin, Action<Bullet> killEvent, float speed, float lifeTime, float damage)
     {
         gameObject.SetActive(true);
         
@@ -53,5 +52,10 @@ public class Bullet : MonoBehaviour
         
         // Used to return bullet to object pool once destroyed
         this.killEvent = killEvent;
+        
+        // Set attributes
+        bulletSpeed = speed;
+        bulletLifeTime = lifeTime;
+        bulletDamage = damage;
     }
 }

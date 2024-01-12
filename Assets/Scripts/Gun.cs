@@ -11,8 +11,19 @@ public class Gun : MonoBehaviour
     
     [Header("References")]
     [SerializeField] private Transform bulletsParent;
-
     [SerializeField] private Transform bulletsOrigin;
+
+    [Header("Config")] 
+    [SerializeField] private float shootDelay;
+    
+    [Header("Bullets")]
+    [SerializeField] private float bulletSpeed;
+    [SerializeField] private float bulletLifeTime;
+    [SerializeField] private float bulletDamage;
+
+    
+    
+    private float currentShootDelay;
     
     
     private ObjectPool<Bullet> bullets;
@@ -21,7 +32,7 @@ public class Gun : MonoBehaviour
     {
         bullets = new ObjectPool<Bullet>(
             () => Instantiate(bulletObject, bulletsOrigin.position, Quaternion.identity, bulletsParent).GetComponent<Bullet>(),
-            bullet => bullet.Shoot(bulletsOrigin, KillBullet), // Run shoot function whenever a new bullet is needed
+            bullet => bullet.Shoot(bulletsOrigin, KillBullet, bulletSpeed, bulletLifeTime, bulletDamage), // Run shoot function whenever a new bullet is needed
             bullet => bullet.gameObject.SetActive(false),
             bullet => Destroy(bullet.gameObject)
         );
@@ -29,8 +40,11 @@ public class Gun : MonoBehaviour
 
     private void Update()
     {
+        if (currentShootDelay > 0)
+            currentShootDelay -= Time.deltaTime;
+        
         // Shooting logic
-        if (Input.GetMouseButtonDown(0))
+        if ( currentShootDelay <= 0 && Input.GetMouseButton(0))
             Shoot();
     }
     
@@ -41,6 +55,9 @@ public class Gun : MonoBehaviour
     {
         // Use object pool to spawn bullet
         bullets.Get();
+        
+        // Add delay to each shot
+        currentShootDelay = shootDelay;
     }
 
     /// <summary>
