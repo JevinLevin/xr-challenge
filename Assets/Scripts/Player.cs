@@ -79,7 +79,6 @@ public class Player : MonoBehaviour
         
         velocity.y = ySpeed;
         
-        
         controller.Move(velocity * Time.deltaTime);
 
         // Ground interaction
@@ -109,7 +108,7 @@ public class Player : MonoBehaviour
         Vector3 moveDirection = mainCamera.transform.TransformDirection(inputDirection);
         moveDirection.y = 0;
 
-        return moveDirection;
+        return moveDirection.normalized;
     }
 
     private void OnTriggerEnter(Collider other)
