@@ -15,6 +15,9 @@ public class Player : MonoBehaviour
     [SerializeField] private float playerJumpBuffer = 0.2f;
     [SerializeField] private float playerCoyoteTime = 0.2f;
 
+    [Header("Debug")] 
+    [SerializeField] private bool immune;
+
     private CharacterController controller;
     private Camera mainCamera;
     
@@ -118,6 +121,9 @@ public class Player : MonoBehaviour
         {
             CollectPickup(pickupScript);
         }
+        
+        if (active && GameManager.Instance.IsEscaping && other.CompareTag("Escape"))
+            Escape();
     }
 
     /// <summary>
@@ -174,9 +180,24 @@ public class Player : MonoBehaviour
     /// </summary>
     public void Die()
     {
+        // Stops player from dying if debugging with immune bool
+        if (immune) return;
+        
+        // Stop this from being ran multiple times
+        if (!active) return;
+        
         active = false;
         
         SceneTransitioner.Instance.ReloadCurrentScene("You Died");
+    }
+
+    private void Escape()
+    {
+        active = false;
+        
+        GameManager.Instance.WinGame();
+        
+        SceneTransitioner.Instance.ReloadCurrentScene("You Win!");
     }
     
 }

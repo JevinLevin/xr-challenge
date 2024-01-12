@@ -15,7 +15,7 @@ public class ScoreManager : MonoBehaviour
 
     private void Start()
     {
-        GameManager.Instance.OnUpdateScore += SetScore;
+        GameManager.OnUpdateScore += SetScore;
     }
 
     /// <summary>
