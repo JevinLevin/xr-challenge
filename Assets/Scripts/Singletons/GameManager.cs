@@ -74,6 +74,7 @@ public class GameManager : MonoBehaviour
         if(pickups.Count <= 0)
             StartEscape();
     }
+    
 
     /// <summary>
     /// Ran when the game scene loads
@@ -148,6 +149,9 @@ public class GameManager : MonoBehaviour
         SceneTransitioner.Instance.LoadSelectedScene("WinScreen", "You Win!");
     }
 
+    /// <summary>
+    /// Calculates the players final score based on their score and time taken. Also determines if it affects their high scre
+    /// </summary>
     private void CalculateFinalScore()
     {
         // Calculates final score by subtracting the time taken
@@ -156,7 +160,18 @@ public class GameManager : MonoBehaviour
         // Sets the highscore to the current score if its higher
         HighScore = FinalScore > HighScore ? FinalScore : HighScore;
     }
+    
+    /// <summary>
+    /// If the player starts the game from the main menu
+    /// </summary>
+    public void LoadGame()
+    {
+        SceneTransitioner.Instance.LoadSelectedScene("Main", "Loading Game...");
+    }
 
+    /// <summary>
+    /// If the player retrys from the win screen
+    /// </summary>
     public void RetryGame()
     {
         SceneTransitioner.Instance.LoadSelectedScene("Main", "Loading Game...");
