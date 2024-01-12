@@ -53,7 +53,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   transitionDelay: 2
   defaultInLength: 1
-  defaultOutLength: 1
+  defaultOutLength: 0.5
 --- !u!223 &1630850944274669003
 Canvas:
   m_ObjectHideFlags: 0

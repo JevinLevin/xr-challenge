@@ -176,4 +176,20 @@ public class GameManager : MonoBehaviour
     {
         SceneTransitioner.Instance.LoadSelectedScene("Main", "Loading Game...");
     }
+    
+    
+    public IEnumerator PlayTween(Action<float> setValue, float startValue, float endValue, float length)
+    {
+        float time = 0.0f;
+        float t;
+
+        while ((t = time / length) < 1)
+        {
+            setValue?.Invoke(Mathf.Lerp(startValue, endValue, t));
+
+            time += Time.deltaTime;
+
+            yield return null;
+        }
+    }
 }

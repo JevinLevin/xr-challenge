@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using DG.Tweening;
 using TMPro;
 using UnityEngine;
 
@@ -50,7 +49,8 @@ public class TransitionScreen : MonoBehaviour
     /// </summary>
     private void FadeScreen(float endValue, float length)
     {
-        canvasGroup.DOFade(endValue, length);
+        StartCoroutine(GameManager.Instance.PlayTween(value => canvasGroup.alpha = value, canvasGroup.alpha, endValue, length));
     }
-    
+
+
 }
