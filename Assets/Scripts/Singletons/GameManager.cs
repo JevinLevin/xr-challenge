@@ -8,8 +8,6 @@ public class GameManager : MonoBehaviour
     #region Singleton
     public static GameManager Instance { get; private set; }
     
-    public Player player { get; set; }
-    public Action<int> OnUpdateScore;
 
     private void Awake()
     {
@@ -26,4 +24,15 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(this.gameObject);
     }
     #endregion
+    
+    public Player player { get; set; }
+    public Action<int> OnUpdateScore;
+
+    private int score;
+    public void GiveScore(int addScore)
+    {
+        score += addScore;
+        
+        OnUpdateScore?.Invoke(score);
+    }
 }

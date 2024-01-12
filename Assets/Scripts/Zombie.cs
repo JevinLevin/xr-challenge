@@ -8,6 +8,7 @@ public class Zombie : MonoBehaviour
 {
     [Header("Config")] 
     [SerializeField] private float maxHealth;
+    [SerializeField] private int scoreValue;
 
     private float health;
     private Action<float> onHealthChange;
@@ -73,6 +74,8 @@ public class Zombie : MonoBehaviour
     private void Die()
     {
         onKillZombie?.Invoke(this);
+        
+        GameManager.Instance.GiveScore(scoreValue);
         
         Destroy(gameObject);
     }

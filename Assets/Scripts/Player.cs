@@ -24,9 +24,7 @@ public class Player : MonoBehaviour
     
     private float jumpBuffer;
     private float coyoteTime;
-
-    private int score;
-
+    
     private void Awake()
     {
         controller = GetComponent<CharacterController>();
@@ -133,10 +131,9 @@ public class Player : MonoBehaviour
         if (newScore == -1)
             return;
         
-        score += newScore;
-        
-        GameManager.Instance.OnUpdateScore?.Invoke(score);
+        GameManager.Instance.GiveScore(newScore);
     }
+    
 
     /// <summary>
     /// Ran if the player falls off a platform without jumping
