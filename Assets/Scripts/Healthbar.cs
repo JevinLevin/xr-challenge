@@ -17,6 +17,18 @@ public class Healthbar : MonoBehaviour
     private float health;
     private float maxHealth;
 
+    private Camera mainCamera;
+
+    private void Awake()
+    {
+        mainCamera = Camera.main;
+    }
+
+    private void Update()
+    {
+        transform.forward = mainCamera.transform.forward;
+    }
+
     /// <summary>
     /// Inititalises the healthbar
     /// </summary>

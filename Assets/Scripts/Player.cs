@@ -13,6 +13,7 @@ public class Player : MonoBehaviour
     [Header("References")] 
     [SerializeField] private Transform eyes;
     [SerializeField] private Transform gun;
+    [SerializeField] private Transform bulletsParent;
     
     [Header("Config")] 
     [SerializeField] private float playerSpeed;
@@ -45,7 +46,7 @@ public class Player : MonoBehaviour
         active = true;
 
         bullets = new ObjectPool<Bullet>(
-            () => Instantiate(bulletObject, gun.position, Quaternion.identity).GetComponent<Bullet>(),
+            () => Instantiate(bulletObject, gun.position, Quaternion.identity, bulletsParent).GetComponent<Bullet>(),
             bullet => bullet.Shoot(gun.transform, KillBullet), // Run shoot function whenever a new bullet is needed
             bullet => bullet.gameObject.SetActive(false),
             bullet => Destroy(bullet.gameObject)

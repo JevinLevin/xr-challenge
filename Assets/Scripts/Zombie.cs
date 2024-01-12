@@ -11,6 +11,7 @@ public class Zombie : MonoBehaviour
 
     private float health;
     private Action<float> onHealthChange;
+    private Action<Zombie> onKillZombie;
     
     private NavMeshAgent agent;
     private Transform player;
@@ -36,6 +37,16 @@ public class Zombie : MonoBehaviour
     }
 
     /// <summary>
+    /// Initialise zombie
+    /// </summary>
+    public void Spawn(Vector3 position, Action<Zombie> onKillZombie)
+    {
+        this.onKillZombie = onKillZombie;
+        
+        agent.Warp(position);
+    }
+
+    /// <summary>
     /// Move the zombie to the players position
     /// </summary>
     private void MoveToPlayer()
@@ -57,10 +68,12 @@ public class Zombie : MonoBehaviour
     }
 
     /// <summary>
-    /// Ran once the zombies health reaches 0
+    /// Kills zombie once the health reaches 0
     /// </summary>
     private void Die()
     {
+        onKillZombie?.Invoke(this);
+        
         Destroy(gameObject);
     }
 }
