@@ -16,9 +16,13 @@ public class TimerHandler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        timerText.text = GenerateText(GameManager.Instance.GetCurrentTime());
+        timerText.text = GenerateText(GameManager.Instance.Timer);
     }
 
+    /// <summary>
+    /// Takes timer float and formats a string to display it
+    /// </summary>
+    /// <returns>Formatted string based off time inputted (TIME: 00:00).</returns>
     private string GenerateText(float time)
     {
         int mins = (int)time / 60;

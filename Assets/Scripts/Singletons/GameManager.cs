@@ -35,8 +35,10 @@ public class GameManager : MonoBehaviour
 
     private List<Pickup> pickups;
 
-    private int score;
-    private float timer;
+    public int Score { get; private set; }
+    public float Timer { get; private set; }
+    public int FinalScore { get; private set; }
+    public int HighScore { get; private set; }
     
     public bool IsGameActive { get; private set; }
     public bool IsEscaping { get; private set; }
@@ -54,23 +56,12 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         CreateSingleton();
-
-        IsEscaping = false;
-    }
-
-    private void Start()
-    {
-        // I would do this in the pickup script instead but I can't alter it...
-        pickups = FindObjectsOfType<Pickup>().ToList();
-        foreach (Pickup pickup in pickups)
-        {
-            pickup.OnPickUp += CheckPickups;
-        }
     }
 
     private void Update()
     {
-        timer += Time.deltaTime;
+        if(IsGameActive)
+            Timer += Time.deltaTime;
     }
 
     /// <summary>
@@ -92,9 +83,28 @@ public class GameManager : MonoBehaviour
         if (scene.name != "Main") return;
 
         IsGameActive = true;
+        IsEscaping = false;
         OnGameStart?.Invoke();
 
-        timer = 0.0f;
+        StartCoroutine(FindPickups());
+            
+        Timer = 0.0f;
+        Score = 0;
+
+    }
+
+    private IEnumerator FindPickups()
+    {
+        // Coroutine needs to wait a frame for the scene to load before checking
+        // This is because the sceneloaded event runs before the awake function, and the gamemanager start function will run only in the scene the game starts in
+        // Ideally all this logic would be handled in the pickup scripts themselves anyways but i cant alter them...
+        yield return new WaitForEndOfFrame();
+        
+        pickups = FindObjectsOfType<Pickup>().ToList();
+        foreach (Pickup pickup in pickups)
+        {
+            pickup.OnPickUp += CheckPickups;
+        }
     }
 
     /// <summary>
@@ -102,8 +112,6 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private void StartEscape()
     {
-        print("ESCAPE");
-
         IsEscaping = true;
         
         OnEscapeStart?.Invoke();
@@ -114,9 +122,9 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void GiveScore(int addScore)
     {
-        score += addScore;
+        Score += addScore;
         
-        OnUpdateScore?.Invoke(score);
+        OnUpdateScore?.Invoke(Score);
     }
 
     /// <summary>
@@ -134,10 +142,23 @@ public class GameManager : MonoBehaviour
     {
         EndGame();
         IsEscaping = false;
+        
+        CalculateFinalScore();
+        
+        SceneTransitioner.Instance.LoadSelectedScene("WinScreen", "You Win!");
     }
 
-    public float GetCurrentTime()
+    private void CalculateFinalScore()
     {
-        return timer;
+        // Calculates final score by subtracting the time taken
+        FinalScore = Score - (int)Timer*5;
+
+        // Sets the highscore to the current score if its higher
+        HighScore = FinalScore > HighScore ? FinalScore : HighScore;
+    }
+
+    public void RetryGame()
+    {
+        SceneTransitioner.Instance.LoadSelectedScene("Main", "Loading Game...");
     }
 }

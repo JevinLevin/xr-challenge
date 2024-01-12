@@ -194,8 +194,6 @@ public class Player : MonoBehaviour
     private void Escape()
     {
         GameManager.Instance.WinGame();
-        
-        SceneTransitioner.Instance.ReloadCurrentScene("You Win!");
     }
     
 }

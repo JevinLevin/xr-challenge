@@ -25,6 +25,10 @@ public class EscapeTextHandler : MonoBehaviour
         escapeText.alpha = 0.0f;
     }
 
+    
+    /// <summary>
+    /// Makes text visible
+    /// </summary>
     private void ActivateText()
     {
         escapeText.alpha = 1.0f;
