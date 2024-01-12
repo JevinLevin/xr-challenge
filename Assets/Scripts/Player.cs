@@ -23,7 +23,6 @@ public class Player : MonoBehaviour
     
     private float ySpeed;
     private bool onGround;
-    private bool active;
     
     private float jumpBuffer;
     private float coyoteTime;
@@ -31,8 +30,6 @@ public class Player : MonoBehaviour
     private void Awake()
     {
         controller = GetComponent<CharacterController>();
-
-        active = true;
 
         GameManager.Instance.Player = this;
 
@@ -46,7 +43,7 @@ public class Player : MonoBehaviour
     private void Update()
     {
         // Dont run update if game is inactive
-        if (!active) return;
+        if (!GameManager.Instance.IsGameActive) return;
 
         Vector3 moveDirection = GetMovementDirection();
 
@@ -94,7 +91,7 @@ public class Player : MonoBehaviour
         
         // Falling logic
         // No longer really needed since there is no place to fall, but good for if the player glitches out of bounds i guess
-        if (transform.position.y < -1 && active)
+        if (transform.position.y < -1 && GameManager.Instance.IsGameActive)
             Die();
         
     }
@@ -122,7 +119,7 @@ public class Player : MonoBehaviour
             CollectPickup(pickupScript);
         }
         
-        if (active && GameManager.Instance.IsEscaping && other.CompareTag("Escape"))
+        if (GameManager.Instance.IsGameActive && GameManager.Instance.IsEscaping && other.CompareTag("Escape"))
             Escape();
     }
 
@@ -184,9 +181,9 @@ public class Player : MonoBehaviour
         if (immune) return;
         
         // Stop this from being ran multiple times
-        if (!active) return;
+        if (!GameManager.Instance.IsGameActive) return;
         
-        active = false;
+        GameManager.Instance.EndGame();
         
         SceneTransitioner.Instance.ReloadCurrentScene("You Died");
     }
@@ -196,8 +193,6 @@ public class Player : MonoBehaviour
     /// </summary>
     private void Escape()
     {
-        active = false;
-        
         GameManager.Instance.WinGame();
         
         SceneTransitioner.Instance.ReloadCurrentScene("You Win!");
