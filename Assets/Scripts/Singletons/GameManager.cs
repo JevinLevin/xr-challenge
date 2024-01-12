@@ -49,6 +49,9 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Checks if all the pickups have been collected
+    /// </summary>
     private void CheckPickups(Pickup pickup)
     {
         pickups.Remove(pickup);
@@ -57,6 +60,9 @@ public class GameManager : MonoBehaviour
             StartEscape();
     }
 
+    /// <summary>
+    /// Triggers the escape phase of the game
+    /// </summary>
     private void StartEscape()
     {
         print("ESCAPE");
@@ -66,6 +72,9 @@ public class GameManager : MonoBehaviour
         OnEscapeStart?.Invoke(true);
     }
 
+    /// <summary>
+    /// Adds to the total score
+    /// </summary>
     public void GiveScore(int addScore)
     {
         score += addScore;
@@ -73,6 +82,9 @@ public class GameManager : MonoBehaviour
         OnUpdateScore?.Invoke(score);
     }
 
+    /// <summary>
+    /// Ran once the player escapes
+    /// </summary>
     public void WinGame()
     {
         IsEscaping = false;

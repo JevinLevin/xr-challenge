@@ -191,6 +191,9 @@ public class Player : MonoBehaviour
         SceneTransitioner.Instance.ReloadCurrentScene("You Died");
     }
 
+    /// <summary>
+    /// Ran once the player reaches the escape point
+    /// </summary>
     private void Escape()
     {
         active = false;

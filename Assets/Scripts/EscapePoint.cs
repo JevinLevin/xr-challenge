@@ -10,11 +10,11 @@ public class EscapePoint : MonoBehaviour
     [SerializeField] private Material onMaterial;
 
     [Header("References")] 
-    private Material platformMaterial;
+    private MeshRenderer escapeRenderer;
 
     private void Awake()
     {
-        platformMaterial = GetComponent<Material>();
+        escapeRenderer = GetComponent<MeshRenderer>();
         
         SetMaterial(false);
     }
@@ -24,8 +24,11 @@ public class EscapePoint : MonoBehaviour
         GameManager.OnEscapeStart += SetMaterial;
     }
 
+    /// <summary>
+    /// Changes the material of the escape point depending on if the player can currently escape or not
+    /// </summary>
     private void SetMaterial(bool state)
     {
-        platformMaterial = state ? onMaterial : offMaterial;
+        escapeRenderer.material = state ? onMaterial : offMaterial;
     }
 }
