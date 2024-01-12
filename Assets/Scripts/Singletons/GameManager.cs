@@ -178,14 +178,14 @@ public class GameManager : MonoBehaviour
     }
     
     
-    public IEnumerator PlayTween(Action<float> setValue, float startValue, float endValue, float length)
+    public IEnumerator PlayTween(Action<float> setValue, float startValue, float endValue, float length, Func<float, float> easeFunction)
     {
         float time = 0.0f;
         float t;
 
         while ((t = time / length) < 1)
         {
-            setValue?.Invoke(Mathf.Lerp(startValue, endValue, t));
+            setValue?.Invoke(Mathf.Lerp(startValue, endValue, easeFunction(t)));
 
             time += Time.deltaTime;
 

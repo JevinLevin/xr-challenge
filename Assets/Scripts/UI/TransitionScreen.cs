@@ -49,7 +49,7 @@ public class TransitionScreen : MonoBehaviour
     /// </summary>
     private void FadeScreen(float endValue, float length)
     {
-        StartCoroutine(GameManager.Instance.PlayTween(value => canvasGroup.alpha = value, canvasGroup.alpha, endValue, length));
+        StartCoroutine(GameManager.Instance.PlayTween(value => canvasGroup.alpha = value, canvasGroup.alpha, endValue, length, Easing.easeOutQuad));
     }
 
 
