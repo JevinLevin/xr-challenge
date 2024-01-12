@@ -47,7 +47,7 @@ public class Player : MonoBehaviour
 
         bullets = new ObjectPool<Bullet>(
             () => Instantiate(bulletObject, gun.position, Quaternion.identity, bulletsParent).GetComponent<Bullet>(),
-            bullet => bullet.Shoot(gun.transform, KillBullet), // Run shoot function whenever a new bullet is needed
+            bullet => bullet.Shoot(gun, KillBullet), // Run shoot function whenever a new bullet is needed
             bullet => bullet.gameObject.SetActive(false),
             bullet => Destroy(bullet.gameObject)
         );
@@ -66,10 +66,13 @@ public class Player : MonoBehaviour
 
         Vector3 moveDirection = GetMovementDirection();
 
-        // Rotate the player in the direction they're moving in (unless theres no input)
-        if (moveDirection != Vector3.zero)
-            rotationDirection = moveDirection;
-        Quaternion rotationQuaternion = Quaternion.LookRotation(rotationDirection, transform.up);
+        // Get mouse direction in 3d worldspace
+        Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+        Physics.Raycast(ray, out RaycastHit hit);
+        Vector3 mouseDirection = hit.point - transform.position;
+        mouseDirection.y = 0;
+        // Rotate towards mouse position smoothly
+        Quaternion rotationQuaternion = Quaternion.LookRotation(mouseDirection);
         transform.rotation = Quaternion.Slerp(transform.rotation, rotationQuaternion, Time.deltaTime * 16);
         
         Vector3 velocity = moveDirection * playerSpeed;
