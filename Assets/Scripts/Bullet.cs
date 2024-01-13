@@ -28,6 +28,9 @@ public class Bullet : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (other.name == "Player") return;
+
+        // Stop from colliding with ground
+        if (other.gameObject.layer == 7) return;
         
         if (other.TryGetComponent(out Zombie zombieScript))
         {
