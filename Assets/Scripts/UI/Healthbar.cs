@@ -41,6 +41,8 @@ public class Healthbar : MonoBehaviour
     /// <summary>
     /// Inititalises the healthbar
     /// </summary>
+    /// <param name="maxHealth">The max value of the healthbar.</param>
+    /// <param name="onHealthChange">Action to be run every time the parent object takes damage.</param>
     public void Setup(float maxHealth, ref Action<float> onHealthChange)
     {
         this.maxHealth = maxHealth;
@@ -51,6 +53,7 @@ public class Healthbar : MonoBehaviour
     /// Called by the parent whenever their health is changed
     /// By assigning it to an event it avoids needing to be checked every frame in update
     /// </summary>
+    /// <param name="health">Value to change the healthbars value to.</param>
     private void OnHealthChange(float health)
     {
         this.health = health;

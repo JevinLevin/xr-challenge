@@ -35,6 +35,7 @@ public class ScoreHandler : MonoBehaviour
     /// <summary>
     /// Sets score text based on input
     /// </summary>
+    /// <param name="score">The players current score.</param>
     private void SetScore(int score)
     {
         text.text = "SCORE: " + score;

@@ -43,6 +43,11 @@ public class Bullet : MonoBehaviour
     /// <summary>
     /// Inititalises the bullet each time its shot
     /// </summary>
+    /// <param name="origin">Transform of the object spawning the bullet.</param>
+    /// <param name="killEvent">Action to be ran once the bullet is killed</param>
+    /// <param name="speed">Speed at which the bullet will travel in</param>
+    /// <param name="lifeTime">How long the bullet will last before being automatically killed.</param>
+    /// <param name="damage">How much health the bullet will take off an enemy it hits.</param>
     public void Shoot(Transform origin, Action<Bullet> killEvent, float speed, float lifeTime, float damage)
     {
         gameObject.SetActive(true);

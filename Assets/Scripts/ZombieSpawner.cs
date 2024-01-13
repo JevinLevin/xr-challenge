@@ -117,6 +117,7 @@ public class ZombieSpawner : MonoBehaviour
     /// Calculates if position is out of camera view or obstructed by walls
     /// </summary>
     /// <returns>A bool stating if the position is visible or not.</returns>
+    /// <param name="position">The point to check the visibility of.</param>
     private bool IsVisible(Vector3 position)
     {
         Vector3 cameraPosition = mainCamera.WorldToViewportPoint(position);
@@ -136,6 +137,7 @@ public class ZombieSpawner : MonoBehaviour
     /// <summary>
     /// Handles logic for when a zombie is killed in the map
     /// </summary>
+    /// <param name="zombie">The script of the zombie thats being killed.</param>
     private void KillZombie(Zombie zombie)
     {
         zombies.Remove(zombie);

@@ -40,6 +40,8 @@ public class Zombie : MonoBehaviour
     /// <summary>
     /// Initialise zombie
     /// </summary>
+    /// <param name="position">World point to spawn the zombie.</param>
+    /// <param name="onKillZombie">Action to be ran when the zombie dies.</param>
     public void Spawn(Vector3 position, Action<Zombie> onKillZombie)
     {
         this.onKillZombie = onKillZombie;
@@ -58,6 +60,7 @@ public class Zombie : MonoBehaviour
     /// <summary>
     /// Ran whenever the zombie takes damage
     /// </summary>
+    /// <param name="damage">Value to damage the zombie by</param>
     public void TakeDamage(float damage)
     {
         health -= damage;

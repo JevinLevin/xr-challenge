@@ -72,6 +72,7 @@ public class Gun : MonoBehaviour
     /// <summary>
     /// Returns a bullet to the object pool once done
     /// </summary>
+    /// <param name="bullet">The script of the bullet to be killed.</param>
     private void KillBullet(Bullet bullet)
     {
         bullets.Release(bullet);

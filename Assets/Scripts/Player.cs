@@ -147,6 +147,7 @@ public class Player : MonoBehaviour
     /// <summary>
     /// Collects pickup when player walks into it
     /// </summary>
+    /// <param name="pickupScript">The script of the object thats been collected.</param>
     private void CollectPickup(Pickup pickupScript)
     {
         // Function returns score to add to player
