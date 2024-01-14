@@ -23,6 +23,7 @@ public class TimerHandler : MonoBehaviour
     /// Takes timer float and formats a string to display it
     /// </summary>
     /// <returns>Formatted string based off time inputted (TIME: 00:00).</returns>
+    /// <param name="time">Time in seconds to format</param>
     private string GenerateText(float time)
     {
         int mins = (int)time / 60;

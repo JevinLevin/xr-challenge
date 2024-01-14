@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Search;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -47,14 +46,7 @@ public class Player : MonoBehaviour
 
         Vector3 moveDirection = GetMovementDirection();
 
-        // Get mouse direction in 3d worldspace
-        Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
-        Physics.Raycast(ray, out RaycastHit hit);
-        Vector3 mouseDirection = hit.point - transform.position;
-        mouseDirection.y = 0;
-        // Rotate towards mouse position smoothly
-        Quaternion rotationQuaternion = Quaternion.LookRotation(mouseDirection);
-        transform.rotation = Quaternion.Slerp(transform.rotation, rotationQuaternion, Time.deltaTime * 16);
+        transform.rotation = Quaternion.Slerp(transform.rotation, GetPlayerDirection(), Time.deltaTime * 16);
         
         Vector3 velocity = moveDirection * playerSpeed;
         
@@ -111,6 +103,35 @@ public class Player : MonoBehaviour
         return moveDirection.normalized;
     }
 
+    /// <summary>
+    /// Calculate the direction of the player towards the mouse cursor 
+    /// </summary>
+    /// <returns> The vector direction from the player to the mouse</returns>
+    private Quaternion GetPlayerDirection()
+    {
+        // Get mouse direction in 3d worldspace
+        Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+
+        // Cache transform
+        Transform playerTransform = transform;
+        // Initialise with current direction
+        Vector3 mouseDirection = playerTransform.forward;
+        
+        // Creates a plane at the players current Y level
+        Plane playerPlane = new Plane( Vector3.up, playerTransform.position);
+        // Raycast to that plane
+        if (playerPlane.Raycast(ray, out float distance))
+        {
+            // Get position on plane and convert into a direction
+            Vector3 point = ray.GetPoint(distance);
+            mouseDirection = point - playerTransform.position;
+            mouseDirection.y = 0;
+        }
+        
+        // Return direction of mouse
+        return Quaternion.LookRotation(mouseDirection);
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.TryGetComponent(out Pickup pickupScript))
@@ -125,6 +146,7 @@ public class Player : MonoBehaviour
     /// <summary>
     /// Collects pickup when player walks into it
     /// </summary>
+    /// <param name="pickupScript">The script of the object thats been collected.</param>
     private void CollectPickup(Pickup pickupScript)
     {
         // Function returns score to add to player

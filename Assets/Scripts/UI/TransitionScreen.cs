@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using DG.Tweening;
 using TMPro;
 using UnityEngine;
 
@@ -23,6 +22,8 @@ public class TransitionScreen : MonoBehaviour
     /// Increases opacity of screen
     /// Additionally sets screen text if provided
     /// </summary>
+    /// <param name="length">Duration in seconds of the fade</param>
+    /// <param name="transitionMsg">Text to display on the screen during the transition.</param>
     public void FadeIn(float length, string transitionMsg = "")
     {
         // Init
@@ -36,6 +37,7 @@ public class TransitionScreen : MonoBehaviour
     /// <summary>
     /// Decreases opacity of screen
     /// </summary>
+    /// <param name="length">Duration in seconds of the fade</param>
     public void FadeOut(float length)
     {
         // Init
@@ -48,9 +50,12 @@ public class TransitionScreen : MonoBehaviour
     /// <summary>
     /// Tweens screen opacity based on parameters
     /// </summary>
+    /// <param name="endValue">The final value to tween the opacity of the transition screen</param>
+    /// <param name="length">Duration in seconds of the fade</param>
     private void FadeScreen(float endValue, float length)
     {
-        canvasGroup.DOFade(endValue, length);
+        StartCoroutine(GameManager.Instance.PlayTween(value => canvasGroup.alpha = value, canvasGroup.alpha, endValue, length, Easing.easeOutQuad));
     }
-    
+
+
 }

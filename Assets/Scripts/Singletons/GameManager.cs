@@ -79,8 +79,11 @@ public class GameManager : MonoBehaviour
     /// <summary>
     /// Ran when the game scene loads
     /// </summary>
+    /// <param name="scene">Current scene name</param>
+    /// <param name="loadSceneMode">Mode of the current scene</param>
     private void StartGame(Scene scene, LoadSceneMode loadSceneMode)
     {
+        // Only start game if in the game scene
         if (scene.name != "Main") return;
 
         IsGameActive = true;
@@ -121,6 +124,7 @@ public class GameManager : MonoBehaviour
     /// <summary>
     /// Adds to the total score
     /// </summary>
+    /// <param name="addScore">Value to add to the current score</param>
     public void GiveScore(int addScore)
     {
         Score += addScore;
@@ -175,5 +179,47 @@ public class GameManager : MonoBehaviour
     public void RetryGame()
     {
         SceneTransitioner.Instance.LoadSelectedScene("Main", "Loading Game...");
+    }
+    
+    /// <summary>
+    /// Tweens a value over a specified time
+    /// </summary>
+    /// <param name="setValue">Delegate to pass the tweened value into to affect</param>
+    /// <param name="startValue">The tween value at the beginning</param>
+    /// <param name="endValue">The target value to tween to</param>
+    /// <param name="length">Duration in seconds of the fade</param>
+    /// <param name="easeFunction">Delegate to convert the current time. Used to smoothen the tween</param>
+    public IEnumerator PlayTween(Action<float> setValue, float startValue, float endValue, float length, Func<float, float> easeFunction)
+    {
+        float time = 0.0f;
+        float t;
+
+        while ((t = time / length) < 1)
+        {
+            if (setValue != null)
+            {
+                setValue.Invoke(Mathf.Lerp(startValue, endValue, easeFunction(t)));
+            }
+
+            time += Time.deltaTime;
+
+            yield return null;
+        }
+    }
+    
+    /// <summary>
+    /// Tweens a value back and forth over a specified time
+    /// </summary>
+    /// <param name="setValue">Delegate to pass the tweened value into to affect</param>
+    /// <param name="startValue">The tween value at the beginning</param>
+    /// <param name="endValue">The target value to tween to</param>
+    /// <param name="inLength">Duration in seconds of first section of the tween</param>
+    /// <param name="outLength">Duration in seconds of second section of the tween</param>
+    /// <param name="easeFunction">Delegate to convert the current time. Used to smoothen the tween</param>
+    public IEnumerator PlayTweenYoYo(Action<float> setValue, float startValue, float endValue, float inLength, float outLength, Func<float, float> easeFunction)
+    {
+        StartCoroutine(PlayTween(setValue, startValue, endValue, inLength, easeFunction));
+        yield return new WaitForSeconds(inLength);
+        StartCoroutine(PlayTween(setValue, endValue, startValue, outLength, easeFunction));
     }
 }
