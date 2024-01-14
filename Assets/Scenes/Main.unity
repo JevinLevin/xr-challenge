@@ -941,7 +941,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 4.12e-43, y: 5.42e-43, z: 0, w: -0.0000000013969901}
+  m_BoundingSphereOverride: {x: 0, y: -4.113083, z: 7.47e-43, w: -0.00000004063756}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
@@ -5918,7 +5918,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1074634955}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -17, y: -5.5, z: 43}
+  m_LocalPosition: {x: -17.5, y: -5.5, z: 43}
   m_LocalScale: {x: 3, y: 15, z: 3}
   m_Children: []
   m_Father: {fileID: 178869124}
@@ -8385,7 +8385,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   zombieObject: {fileID: 955705085363698514, guid: 321696a98f8bf8146b237c48fd862f55,
     type: 3}
-  spawnDelay: {x: 1, y: 4}
+  spawnDelay: {x: 1, y: 3.5}
   spawnCount: {x: 1, y: 3}
   maxZombieCount: 100
   minPlayerDistance: 15
